@@ -3,3 +3,4 @@
 export(CovidAPI)
 export(GetAvalaibleCountries)
 export(GetCountrySummary)
+export(GetDayOne)

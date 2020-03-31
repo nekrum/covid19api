@@ -54,3 +54,31 @@ GetAvalaibleCountries <- function() {
     data.table::set(countries.data, which(countries.data[[j]] == ""), j, NA)
   return(countries.data[])
 }
+
+#' Get DayOne cases
+#'
+#' Get all cases by type and country from the first recorded case.
+#' Country must be the slug from GetAvalaibleCountries() or GetCountrySummary(). Cases
+#' must be one of: confirmed, recovered, deaths.
+#'
+#' @param country.requested Country slug name choosed
+#' @param status.requested Status requested, they could be confirmed, recovered or deaths
+#' @param live If TRUE gets the lates cases from the country and status requested
+#'
+#' @return Data frame columns country, Province, latitude, longitude, date, number of cases and status
+#' @export
+#'
+#' @examples GetDayOne(country.requested = 'mexico', status.requested = 'confirmed')
+#' #' @examples GetDayOne(country.requested = 'mexico', status.requested = 'confirmed', live = TRUE)
+GetDayOne <- function(country.requested = "mexico", status.requested = "confirmed", live = FALSE){
+  dayone.request <- glue::glue("dayone/country/{country.requested}/status/{status.requested}")
+  if(live) {
+    paste0(dayone.request, "/live")
+  }
+  dayone.resp <- CovidAPI(dayone.request)
+  day.one.data <- jsonlite::fromJSON(
+    httr::content(dayone.resp, "text", encoding = "UTF-8"),
+    simplifyDataFrame = T
+  )
+  return(day.one.data)
+}

@@ -15,5 +15,6 @@ Imports:
     httr,
     jsonlite,
     lubridate,
-    data.table
+    data.table,
+    glue
 RoxygenNote: 7.0.2
