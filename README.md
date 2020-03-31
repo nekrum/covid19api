@@ -10,7 +10,7 @@ This R api package was created was created using the `httr()` vignette
 
 ## Installation
 
-You can install the released version of covid19api with:
+You can install covid19api package with:
 
 ``` r
 remotes::install_github("nekrum/covid19api")
@@ -24,6 +24,4 @@ This is a basic example which shows you how to solve a common problem:
 library(covid19api)
 CovidAPI("summary")
 ```
-
-
 
