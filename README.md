@@ -22,7 +22,7 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(covid19api)
-CovidAPI("summary")
+GetCountrySummary()
 ```
 
 > [CovidImage from wikimedia](https://commons.wikimedia.org/wiki/File:Coronavirus_SARS-CoV-2.jpg)

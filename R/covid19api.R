@@ -50,6 +50,7 @@ GetCountrySummary <- function() {
   )
   extraction.datetime <- lubridate::as_datetime(summary.data$Date)
   summary.data <- summary.data$Countries
+  return(summary.data)
 }
 
 #' Get Countries Available in database
