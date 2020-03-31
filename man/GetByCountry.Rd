@@ -22,7 +22,7 @@ Data frame columns country, Province, latitude, longitude, date, number of cases
 Get all by type cases for a country. Country must be the slug from
 GetAvalaibleCountries() or GetCountrySummary(). Cases must be one of:
 confirmed, recovered, deaths. When total parameter is TRUE the live
-parametersis not necesary.
+parameter is not necesary.
 }
 \examples{
 GetByCountry(country.requested = 'mexico', status.requested = 'confirmed')

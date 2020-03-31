@@ -76,8 +76,8 @@ GetAvalaibleCountries <- function() {
 GetDayOne <- function(country.requested, status.requested, live = FALSE, total = FALSE){
   total <- ifelse(total, 'total', "")
   live <- ifelse(live & total == FALSE, '/live', "")
-  dayone.request <- trimws(
-    glue::glue("{total}/dayone/country/{country.requested}/status/{status.requested}{live}")
+  dayone.request <- glue::glue(
+    "{total}/dayone/country/{country.requested}/status/{status.requested}{live}", .trim = T
   )
   dayone.resp <- CovidAPI(dayone.request)
   dayone.data <- jsonlite::fromJSON(
@@ -92,7 +92,7 @@ GetDayOne <- function(country.requested, status.requested, live = FALSE, total =
 #' Get all by type cases for a country. Country must be the slug from
 #' GetAvalaibleCountries() or GetCountrySummary(). Cases must be one of:
 #' confirmed, recovered, deaths. When total parameter is TRUE the live
-#' parametersis not necesary.
+#' parameter is not necesary.
 #'
 #' @param country.requested Country slug name choosed
 #' @param status.requested Status requested, they could be confirmed, recovered or deaths
@@ -108,8 +108,8 @@ GetDayOne <- function(country.requested, status.requested, live = FALSE, total =
 GetByCountry <- function(country.requested, status.requested, live = FALSE, total = FALSE){
   total <- ifelse(total, 'total', "")
   live <- ifelse(live & total == FALSE, '/live', "")
-  bycountry.request <- trimws(
-    glue::glue("{total}/country/{country.requested}/status/{status.requested}{live}")
+  bycountry.request <- glue::glue(
+    "{total}/country/{country.requested}/status/{status.requested}{live}", .trim = T
   )
   bycountry.resp <- CovidAPI(bycountry.request)
   bycountry.data <- jsonlite::fromJSON(
@@ -117,5 +117,47 @@ GetByCountry <- function(country.requested, status.requested, live = FALSE, tota
     simplifyDataFrame = T
   )
   return(bycountry.data)
+}
+
+#' Get Live cases for country
+#'
+#' Get all live cases by  type for a country. Country must be the slug from
+#' GetAvalaibleCountries() or GetCountrySummary(). Cases must be one of:
+#' confirmed, recovered, deaths.
+#' It could be filter by date an time.
+#'
+#' @param country.requested Country slug name choosed
+#' @param status.requested Status requested, they could be confirmed, recovered or deaths
+#' @param after.date Initial date to download data
+#' @param after.time Initial time to donload data, '00:00:00' is default
+#'
+#' @return Data frame columns country, Province, latitude, longitude, datetime, number of cases and status
+#' @export
+#'
+#' @examples GetLiveCountry(country.requested = 'mexico', status.requested = 'confirmed')
+#' @examples GetLiveCountry(
+#'   country.requested = 'mexico',
+#'   status.requested = 'confirmed',
+#'   after.date = '2020-03-27'
+#' )
+#' @examples GetLiveCountry(
+#'   country.requested = 'mexico',
+#'   status.requested = 'confirmed',
+#'   after.date = '2020-03-27',
+#'   after.time = '17:57:00'
+#' )
+GetLiveCountry <- function(country.requested, status.requested, after.date = NA, after.time = '00:00:00'){
+  if(!is.na(after.date)) {
+    after.date <- glue::glue("/date/{after.date}T{after.time}Z")
+  }
+  live.request <- glue::glue(
+    "live/country/{country.requested}/status/{status.requested}{after.date}", .trim = T, .na = ""
+  )
+  live.resp <- CovidAPI(live.request)
+  live.data <- jsonlite::fromJSON(
+    httr::content(live.resp, "text", encoding = "UTF-8"),
+    simplifyDataFrame = T
+  )
+  return(live.data)
 }
 
