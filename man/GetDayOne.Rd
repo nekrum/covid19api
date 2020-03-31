@@ -4,11 +4,7 @@
 \alias{GetDayOne}
 \title{Get DayOne cases}
 \usage{
-GetDayOne(
-  country.requested = "mexico",
-  status.requested = "confirmed",
-  live = FALSE
-)
+GetDayOne(country.requested, status.requested, live = FALSE, total = FALSE)
 }
 \arguments{
 \item{country.requested}{Country slug name choosed}
@@ -16,6 +12,8 @@ GetDayOne(
 \item{status.requested}{Status requested, they could be confirmed, recovered or deaths}
 
 \item{live}{If TRUE gets the lates cases from the country and status requested}
+
+\item{total}{If TRUE returns all cases by type for a country from the first recorded case}
 }
 \value{
 Data frame columns country, Province, latitude, longitude, date, number of cases and status
@@ -23,9 +21,11 @@ Data frame columns country, Province, latitude, longitude, date, number of cases
 \description{
 Get all cases by type and country from the first recorded case.
 Country must be the slug from GetAvalaibleCountries() or GetCountrySummary(). Cases
-must be one of: confirmed, recovered, deaths.
+must be one of: confirmed, recovered, deaths. When total parameter is TRUE the live
+parametersis not necesary.
 }
 \examples{
 GetDayOne(country.requested = 'mexico', status.requested = 'confirmed')
-#' @examples GetDayOne(country.requested = 'mexico', status.requested = 'confirmed', live = TRUE)
+GetDayOne(country.requested = 'mexico', status.requested = 'confirmed', live = TRUE)
+GetDayOne(country.requested = 'mexico', status.requested = 'confirmed', total = TRUE)
 }
