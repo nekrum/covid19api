@@ -13,5 +13,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     httr,
-    jsonlite
+    jsonlite,
+    lubridate,
+    data.table
 RoxygenNote: 7.0.2

@@ -10,7 +10,7 @@ CovidAPI(path)
 \item{path}{API path response}
 }
 \value{
-parsed response
+Get json requested by path string
 }
 \description{
 Calls Covid19 API
