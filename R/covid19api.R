@@ -15,6 +15,24 @@ CovidAPI <- function(path) {
   return(covid.resp)
 }
 
+#' Get all data
+#'
+#' Download all data for all countries.
+#'
+#' @return Data frame columns country, Province, latitude, longitude, date,
+#' number of cases and status
+#' @export
+#'
+#' @examples GetAllData()
+GetAllData <- function() {
+  all.resp <- CovidAPI("all")
+  all.data <- jsonlite::fromJSON(
+    httr::content(all.resp, "text", encoding = "UTF-8"),
+    simplifyDataFrame = T
+  )
+  return(all.data)
+}
+
 #' Get country summary
 #'
 #' Obtain data summary of new and total cases per country updated daily and
@@ -161,3 +179,17 @@ GetLiveCountry <- function(country.requested, status.requested, after.date = NA,
   return(live.data)
 }
 
+#' Get Database stats
+#'
+#' Get use stats for database request
+#'
+#' @return List with stats by each api request calls
+#' @export
+#'
+#' @examples GetDBStats()
+GetDBStats <- function() {
+  stats.resp <- CovidAPI("stats")
+  stats.data <- jsonlite::fromJSON(
+    httr::content(stats.resp, "text", encoding = "UTF-8")
+  )
+}
