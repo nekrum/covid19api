@@ -80,9 +80,42 @@ GetDayOne <- function(country.requested, status.requested, live = FALSE, total =
     glue::glue("{total}/dayone/country/{country.requested}/status/{status.requested}{live}")
   )
   dayone.resp <- CovidAPI(dayone.request)
-  day.one.data <- jsonlite::fromJSON(
+  dayone.data <- jsonlite::fromJSON(
     httr::content(dayone.resp, "text", encoding = "UTF-8"),
     simplifyDataFrame = T
   )
-  return(day.one.data)
+  return(dayone.data)
 }
+
+#' Get cases by Country
+#'
+#' Get all by type cases for a country. Country must be the slug from
+#' GetAvalaibleCountries() or GetCountrySummary(). Cases must be one of:
+#' confirmed, recovered, deaths. When total parameter is TRUE the live
+#' parametersis not necesary.
+#'
+#' @param country.requested Country slug name choosed
+#' @param status.requested Status requested, they could be confirmed, recovered or deaths
+#' @param live If TRUE gets the lates cases from the country and status requested
+#' @param total If TRUE returns all cases by type for a country from the first recorded case
+#'
+#' @return Data frame columns country, Province, latitude, longitude, date, number of cases and status
+#' @export
+#'
+#' @examples GetByCountry(country.requested = 'mexico', status.requested = 'confirmed')
+#' @examples GetByCountry(country.requested = 'mexico', status.requested = 'confirmed', live = TRUE)
+#' @examples GetByCountry(country.requested = 'mexico', status.requested = 'confirmed', total = TRUE)
+GetByCountry <- function(country.requested, status.requested, live = FALSE, total = FALSE){
+  total <- ifelse(total, 'total', "")
+  live <- ifelse(live & total == FALSE, '/live', "")
+  bycountry.request <- trimws(
+    glue::glue("{total}/country/{country.requested}/status/{status.requested}{live}")
+  )
+  bycountry.resp <- CovidAPI(bycountry.request)
+  bycountry.data <- jsonlite::fromJSON(
+    httr::content(bycountry.resp, "text", encoding = "UTF-8"),
+    simplifyDataFrame = T
+  )
+  return(bycountry.data)
+}
+
