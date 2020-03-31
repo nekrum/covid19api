@@ -25,3 +25,4 @@ library(covid19api)
 CovidAPI("summary")
 ```
 
+> [CovidImage from wikimedia](https://commons.wikimedia.org/wiki/File:Coronavirus_SARS-CoV-2.jpg)
